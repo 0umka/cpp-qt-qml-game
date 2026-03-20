@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/MainWindow.qml</file>
+        <file>qml/Player.qml</file>
+        <file>qml/Enemy.qml</file>
+    </qresource>
+</RCC>
