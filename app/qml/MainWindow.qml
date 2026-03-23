@@ -23,30 +23,24 @@ ApplicationWindow {
 
         MouseArea {
             anchors.fill: parent
+            hoverEnabled: true
+
             onPressed: (mouse) => {
                 currentMousePos = Qt.point(mouse.x, mouse.y)
                 player.startFollowingMouse()
-                player.updateFollowPosition(mouse.x, mouse.y)
+                player.setTarget(mouse.x, mouse.y)
             }
 
             onPositionChanged: (mouse) => {
                 if (pressed) {
                     currentMousePos = Qt.point(mouse.x, mouse.y)
-                    player.updateFollowPosition(mouse.x, mouse.y)
+                    player.setTarget(mouse.x, mouse.y)
+
                 }
             }
 
             onReleased: {
                 player.stopFollowingMouse()
-            }
-        }
-
-        Timer {
-            interval: 16
-            repeat: true
-            running: player.followingMouse()
-            onTriggered: {
-                player.updateFollowPosition(currentMousePos.x, currentMousePos.y)
             }
         }
 

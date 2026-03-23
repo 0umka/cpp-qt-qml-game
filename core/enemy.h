@@ -12,6 +12,7 @@ class Enemy : public EntityAlive
     Q_PROPERTY(float speed READ speed)
 public:
     explicit Enemy(QObject *parent = nullptr);
+    ~Enemy() {};
 
 
     //virtual
@@ -47,7 +48,7 @@ private:
 private:
     int const m_id = 2;
     int const m_passable = 1;
-    float const m_speed = 10;
+    float const m_speed = 1;
     int m_health = 100;
     int m_maxHealth = 100;
     int m_level = 1;

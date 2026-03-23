@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <QTimer>
+
 #include "entityalive.h"
 
 class Player : public EntityAlive
@@ -12,8 +14,10 @@ class Player : public EntityAlive
     Q_PROPERTY(int level READ level NOTIFY levelChanged)
     Q_PROPERTY(int experience READ experience NOTIFY experienceChanged)
     Q_PROPERTY(float speed READ speed)
+    Q_PROPERTY(bool followingMouse READ followingMouse NOTIFY followingMouseChanged)
 public:
     explicit Player(QObject *parent = nullptr);
+    ~Player() {};
 
     //virtual
     int health() const override {return m_health; }
@@ -41,8 +45,9 @@ public slots:
     void heal(int amount);
     void addExperience(int exp);
     void startFollowingMouse();
-    void updateFollowPosition(int x, int y);
+    void setTarget(int x, int y);
     void stopFollowingMouse();
+    void updatePosition();
 
 signals:
     void healthChanged();
@@ -50,11 +55,13 @@ signals:
     void levelChanged();
     void experienceChanged();
     void died();
+    void followingMouseChanged();
 
 private:
     int const m_id = 0;
     bool const m_passable = 1;
-    float const m_speed = 15;
+    float const m_speed = 2;
+    QTimer* m_movementTimer = nullptr;
     int m_health = 100;
     int m_maxHealth = 100;
     int m_level = 1;
@@ -62,6 +69,7 @@ private:
     int m_expPerLvl = 10;
     QPointF m_position = QPointF(0, 0);
     bool m_followingMouse = false;
+    QPointF m_target;
 };
 
 #endif // PLAYER_H

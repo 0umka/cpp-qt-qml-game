@@ -4,7 +4,11 @@
 
 Player::Player(QObject *parent)
     : EntityAlive{}
-{}
+{
+    m_movementTimer = new QTimer(this);
+    m_movementTimer->setInterval(16);
+    connect(m_movementTimer, &QTimer::timeout, this, &Player::updatePosition);
+}
 
 void Player::setHealth(int health)
 {
@@ -66,30 +70,37 @@ void Player::addExperience(int exp)
 
 void Player::startFollowingMouse()
 {
-    m_followingMouse = true;
+    if (!m_followingMouse) {
+        m_followingMouse = true;
+        m_movementTimer->start();
+        emit followingMouseChanged();
+    }
 }
 
-void Player::updateFollowPosition(int x, int y)
+void Player::setTarget(int x, int y)
 {
-    if (m_followingMouse) {
-
-        QPointF targetPos = QPointF(x, y);
-        QPointF delta = targetPos - m_position;
-        float distance = std::hypot(delta.x(), delta.y());
-
-        if (distance > m_speed) {
-            m_position += delta / distance;
-            QPointF currentPos = delta / distance;
-            setPosition(m_position + currentPos * m_speed);
-        } else {
-            setPosition(targetPos);
-        }
-    }
+    m_target = QPointF(x, y);
 }
 
 void Player::stopFollowingMouse()
 {
     if (m_followingMouse) {
         m_followingMouse = false;
+        m_movementTimer->stop();
+        emit followingMouseChanged();
+    }
+}
+
+void Player::updatePosition()
+{
+    if (m_followingMouse) {
+
+        QPointF delta = m_target - m_position;
+        float distance = std::hypot(delta.x(), delta.y());
+
+        if (distance > m_speed) {
+            QPointF currentPos = delta / distance;
+            setPosition(m_position + currentPos * m_speed);
+        }
     }
 }

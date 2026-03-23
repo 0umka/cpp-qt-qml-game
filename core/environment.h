@@ -8,6 +8,7 @@ class Environment : public Entity
     Q_OBJECT
 public:
     explicit Environment(QObject *parent = nullptr);
+    ~Environment() {};
 
     //virtual
     bool passable() const override { return m_passable; }
