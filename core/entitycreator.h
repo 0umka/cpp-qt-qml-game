@@ -18,6 +18,7 @@ class EnemyCreator : public EntityCreator
 {
 public:
     explicit EnemyCreator(QObject *parent = nullptr) {};
+    ~EnemyCreator() {};
     Entity* create(QObject *parent = nullptr) const override {return new Enemy(parent); }
 };
 
@@ -25,6 +26,7 @@ class PlayerCreator : public EntityCreator
 {
 public:
     explicit PlayerCreator(QObject *parent = nullptr) {};
+    ~PlayerCreator() {};
     Entity* create(QObject *parent = nullptr) const override {return new Player(parent); }
 };
 
@@ -32,6 +34,7 @@ class EnvCreator : public EntityCreator
 {
 public:
     explicit EnvCreator(QObject *parent = nullptr) {};
+    ~EnvCreator() {};
     Entity* create(QObject *parent = nullptr) const override {return new Environment(parent); }
 };
 

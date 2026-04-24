@@ -40,6 +40,7 @@ public slots:
 public:
     int experience() const { return m_experience; }
     bool followingMouse() const {return m_followingMouse; }
+    static QPointF getPosition() {return m_position;}
 
 public slots:
     void heal(int amount);
@@ -67,7 +68,7 @@ private:
     int m_level = 1;
     int m_experience = 0;
     int m_expPerLvl = 10;
-    QPointF m_position = QPointF(0, 0);
+    static inline QPointF m_position = QPointF(0, 0);
     bool m_followingMouse = false;
     QPointF m_target;
 };

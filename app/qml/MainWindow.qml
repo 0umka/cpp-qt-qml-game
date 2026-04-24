@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
+
 ApplicationWindow {
     visible: true
     width: 800
@@ -51,7 +52,11 @@ ApplicationWindow {
             anchors.margins: 20
             spacing: 10
 
-            Button { text: "Damage"; onClicked: player.takeDamage(10) }
+            Button { text: "Damage"; onClicked: {
+                    player.takeDamage(10)
+                    enemy.takeDamage(10)
+                }
+            }
             Button { text: "Heal"; onClicked: player.heal(10) }
         }
 

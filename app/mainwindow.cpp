@@ -15,15 +15,21 @@ MainWindow::MainWindow(QGuiApplication& app, QObject *parent)
     m_playerCreator = new PlayerCreator(this);
     m_envCreator = new EnvCreator(this);
     m_enemyCreator = new EnemyCreator(this);
+    m_enemyModel = new EnemyModel(this);
+
+    m_gameTimer = new QTimer(this);
+    m_gameTimer->setInterval(16);
+    m_gameTimer->start();
+    connect(m_gameTimer, &QTimer::timeout, this, &MainWindow::updateScene);
 }
 
 bool MainWindow::initQml()
 {
-    Entity* player = m_playerCreator->create(m_engine);
-    m_engine->rootContext()->setContextProperty("player", player);
+    m_engine->rootContext()->setContextProperty("game", this);
+    m_engine->rootContext()->setContextProperty("enemyModel", m_enemyModel);
 
-    Entity* enemy = m_enemyCreator->create(m_engine);
-    m_engine->rootContext()->setContextProperty("enemy", enemy);
+    m_player = static_cast<Player*>(m_playerCreator->create(m_engine));
+    m_engine->rootContext()->setContextProperty("player", m_player);
 
     Entity* environment = m_envCreator->create(m_engine);
     m_engine->rootContext()->setContextProperty("env", environment);
@@ -32,4 +38,26 @@ bool MainWindow::initQml()
     m_engine->load(url);
 
     return !m_engine->rootObjects().isEmpty();
+}
+
+void MainWindow::spawnEnemy()
+{
+    Enemy* enemy = static_cast<Enemy*>(m_enemyCreator->create(m_engine));
+    m_enemyModel->addEnemy(enemy);
+    emit enemyCountChanged();
+}
+
+void MainWindow::clearEnemies()
+{
+    m_enemyModel->clear();
+}
+
+void MainWindow::updateScene()
+{
+    if(m_enemyCounter <= m_player->level()) {
+        for (int i = 0; i <= m_player->level() - m_enemyCounter; i++) {
+            Entity* enemy = static_cast<Enemy*>(m_enemyCreator->create(m_engine));
+            m_engine->rootContext()->setContextProperty("enemy", enemy);
+        }
+    }
 }
