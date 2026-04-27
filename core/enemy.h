@@ -10,11 +10,12 @@ class Enemy : public EntityAlive
     Q_OBJECT
     Q_PROPERTY(int health READ health NOTIFY healthChanged)
     Q_PROPERTY(int maxHealth READ maxHealth NOTIFY levelChanged)
+    Q_PROPERTY(qreal width READ width)
+    Q_PROPERTY(qreal height READ height)
     Q_PROPERTY(QPointF position READ position WRITE setPosition NOTIFY enemyPositionChanged)
-    Q_PROPERTY(float speed READ speed)
 public:
     explicit Enemy(QObject *parent = nullptr);
-    ~Enemy() {};
+    ~Enemy();
 
     //virtual
     int health() const override {return m_health; }
@@ -23,7 +24,10 @@ public:
     bool passable() const override {return m_passable; }
     int id() const override {return m_id; }
     int maxHealth() const override {return m_maxHealth; }
-    float speed() const override {return m_speed;}
+    float speed() const override {return m_speed; }
+    qreal width() const override {return m_width; }
+    qreal height() const override {return m_height; }
+    QRectF hitbox() const override {return m_hitbox; }
 
     void setHealth(int health) override;
     void setPosition(const QPointF& pos) override;
@@ -49,12 +53,15 @@ private:
 private:
     int const m_id = 2;
     int const m_passable = 1;
-    float const m_speed = 2;
+    float const m_speed = 1;
     int m_health = 100;
     int m_maxHealth = 100;
     int m_level = 1;
     QTimer* m_movementTimer = nullptr;
-    QPointF m_position = QPointF(400, 600);
+    QPointF m_position = QPointF(0, 0);
+    qreal m_height = 40;
+    qreal m_width = 40;
+    QRectF m_hitbox = QRectF(m_position.x(), m_position.y(), width(), height());
 };
 
 #endif // ENEMY_H

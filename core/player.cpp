@@ -94,7 +94,6 @@ void Player::stopFollowingMouse()
 void Player::updatePosition()
 {
     if (m_followingMouse) {
-
         QPointF delta = m_target - m_position;
         float distance = std::hypot(delta.x(), delta.y());
 

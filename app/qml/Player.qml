@@ -5,12 +5,15 @@ Item {
 
     property var playerData: null
 
-    x: playerData ? playerData.position.x : 0
-    y: playerData ? playerData.position.y : 0
+    width: playerData ? playerData.width : 0
+    height: playerData ? playerData.height : 0
+
+    x: playerData ? playerData.position.x - height/2 : 0
+    y: playerData ? playerData.position.y - width/2 : 0
 
     Rectangle {
-        width: 40
-        height: 40
+        width: root.width
+        height: root.height
         color: "blue"
         radius: 5
         border.color: "white"

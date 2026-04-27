@@ -18,8 +18,11 @@ ApplicationWindow {
             playerData: player
         }
 
-        Enemy {
-            enemyData: enemy
+        Repeater {
+            model: game.enemyModel
+            delegate: Enemy {
+                enemyData: model.enemyObject
+            }
         }
 
         MouseArea {
@@ -36,7 +39,6 @@ ApplicationWindow {
                 if (pressed) {
                     currentMousePos = Qt.point(mouse.x, mouse.y)
                     player.setTarget(mouse.x, mouse.y)
-
                 }
             }
 
@@ -54,10 +56,15 @@ ApplicationWindow {
 
             Button { text: "Damage"; onClicked: {
                     player.takeDamage(10)
-                    enemy.takeDamage(10)
+
+                    for (var i = 0; i < game.enemyModel.rowCount(); i++) {
+                        var e = game.enemyModel.get(i);
+                        if (e) e.takeDamage(10);
+                    }
                 }
             }
             Button { text: "Heal"; onClicked: player.heal(10) }
+            Button { text: "Add enemy"; onClicked: game.spawnEnemy() }
         }
 
         //информация

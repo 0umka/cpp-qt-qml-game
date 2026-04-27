@@ -53,6 +53,21 @@ void EnemyModel::addEnemy(Enemy* enemy)
     beginInsertRows(QModelIndex(), m_enemies.count(), m_enemies.count());
     m_enemies.append(enemy);
     endInsertRows();
+
+    connect(enemy, &Enemy::enemyPositionChanged, this, [this, enemy]() {
+        int idx = m_enemies.indexOf(enemy);
+        if (idx >= 0) {
+            emit dataChanged(index(idx), index(idx), {PositionRole});
+        }
+    });
+
+    connect(enemy, &Enemy::healthChanged, this, [this, enemy]() {
+        int idx = m_enemies.indexOf(enemy);
+        if (idx >= 0) {
+            emit dataChanged(index(idx), index(idx), {HealthRole});
+        }
+    });
+
     emit enemyAdded(enemy);
 }
 

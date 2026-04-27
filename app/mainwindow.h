@@ -6,6 +6,7 @@
 #include <QQmlApplicationEngine>
 #include <QGuiApplication>
 #include <QQmlContext>
+#include <QRandomGenerator>
 
 #include "enemymodel.h"
 #include "entitycreator.h"
@@ -14,20 +15,18 @@ class MainWindow : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(EnemyModel* enemyModel READ enemyModel CONSTANT)
-    Q_PROPERTY(int enemyCount READ enemyCount NOTIFY enemyCountChanged)
+    Q_PROPERTY(int enemyCount READ enemyCount)
 public:
     explicit MainWindow(QGuiApplication &app, QObject *parent = nullptr);
 
     bool initQml();
     EnemyModel* enemyModel() const { return m_enemyModel; }
     int enemyCount() const { return m_enemyModel->rowCount(); }
-
-signals:
-    void enemyCountChanged();
+    Q_INVOKABLE void spawnEnemy();
 
 private slots:
     void updateScene();
-    Q_INVOKABLE void spawnEnemy();
+    void setupEnemy(Enemy* enemy);
     Q_INVOKABLE void clearEnemies();
 
 private:

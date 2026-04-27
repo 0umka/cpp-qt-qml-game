@@ -42,9 +42,15 @@ bool MainWindow::initQml()
 
 void MainWindow::spawnEnemy()
 {
-    Enemy* enemy = static_cast<Enemy*>(m_enemyCreator->create(m_engine));
+    Enemy* enemy = dynamic_cast<Enemy*>(m_enemyCreator->create(m_engine));
+
+    if (!enemy) {
+        delete enemy;
+        return;
+    }
+
+    setupEnemy(enemy);
     m_enemyModel->addEnemy(enemy);
-    emit enemyCountChanged();
 }
 
 void MainWindow::clearEnemies()
@@ -52,12 +58,34 @@ void MainWindow::clearEnemies()
     m_enemyModel->clear();
 }
 
-void MainWindow::updateScene()
+void MainWindow::removeDeadEnemies()
 {
-    if(m_enemyCounter <= m_player->level()) {
-        for (int i = 0; i <= m_player->level() - m_enemyCounter; i++) {
-            Entity* enemy = static_cast<Enemy*>(m_enemyCreator->create(m_engine));
-            m_engine->rootContext()->setContextProperty("enemy", enemy);
+    for (int i = m_enemyModel->rowCount() - 1; i >= 0; --i) {
+        Enemy* enemy = m_enemyModel->get(i);
+        if (enemy && enemy->health() <= 0) {
+            enemy->deleteLater();
+            m_enemyModel->removeEnemy(i);
         }
     }
+}
+void MainWindow::updateScene()
+{
+    removeDeadEnemies();
+
+    int targetCount = m_player->level();
+    while (m_enemyModel->rowCount() < targetCount) {
+        spawnEnemy();
+    }
+}
+
+void MainWindow::setupEnemy(Enemy* enemy)
+{
+    qreal angle = QRandomGenerator::global()->bounded(2 * M_PI);
+    qreal distance = 200 + QRandomGenerator::global()->bounded(200);
+    QPointF spawnPos(
+        m_player->position().x() + distance * cos(angle),
+        m_player->position().y() + distance * sin(angle)
+        );
+
+    enemy->setPosition(spawnPos);
 }

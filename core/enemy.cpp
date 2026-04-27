@@ -12,6 +12,13 @@ Enemy::Enemy(QObject *parent)
     startFollowingPlayer();
 }
 
+Enemy::~Enemy()
+{
+    disconnect(m_movementTimer, &QTimer::timeout, this, &Enemy::updatePosition);
+    m_movementTimer->stop();
+    delete m_movementTimer;
+}
+
 void Enemy::setHealth(int health)
 {
     health = qBound(0, health, m_maxHealth);

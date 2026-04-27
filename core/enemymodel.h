@@ -29,6 +29,7 @@ public:
     void addEnemy(Enemy *enemy);
     void removeEnemy(int index);
     void clear();
+    Q_INVOKABLE Enemy* get(int index) const;
 
 signals:
     void enemyAdded(Enemy* enemy);
@@ -36,7 +37,6 @@ signals:
 
 private:
     QList<Enemy*> m_enemies;
-    Enemy* get(int index) const;
 };
 
 

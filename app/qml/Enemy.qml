@@ -5,12 +5,15 @@ Item {
 
     property var enemyData: null
 
-    x: enemyData ? enemyData.position.x : 0
-    y: enemyData ? enemyData.position.y : 0
+    width: enemyData ? enemyData.width : 0
+    height: enemyData ? enemyData.height : 0
+
+    x: enemyData ? enemyData.position.x - width/2: 0
+    y: enemyData ? enemyData.position.y - height/2 : 0
 
     Rectangle {
-        width: 40
-        height: 40
+        width: root.width
+        height: root.height
         color: "red"
         radius: 5
         border.color: "darkred"

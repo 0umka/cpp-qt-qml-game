@@ -13,8 +13,9 @@ class Player : public EntityAlive
     Q_PROPERTY(QPointF position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(int level READ level NOTIFY levelChanged)
     Q_PROPERTY(int experience READ experience NOTIFY experienceChanged)
-    Q_PROPERTY(float speed READ speed)
     Q_PROPERTY(bool followingMouse READ followingMouse NOTIFY followingMouseChanged)
+    Q_PROPERTY(qreal width READ width)
+    Q_PROPERTY(qreal height READ height)
 public:
     explicit Player(QObject *parent = nullptr);
     ~Player() {};
@@ -27,6 +28,9 @@ public:
     int id() const override {return m_id; }
     int maxHealth() const override { return m_maxHealth; }
     float speed() const override {return m_speed;}
+    qreal width() const override {return m_width; }
+    qreal height() const override {return m_height; }
+    QRectF hitbox() const override {return m_hitbox; }
 
     void setHealth(int health) override;
     void setPosition(const QPointF& pos) override;
@@ -71,6 +75,9 @@ private:
     static inline QPointF m_position = QPointF(0, 0);
     bool m_followingMouse = false;
     QPointF m_target;
+    qreal m_height = 40;
+    qreal m_width = 40;
+    QRectF m_hitbox = QRectF(m_position.x(), m_position.y(), width(), height());
 };
 
 #endif // PLAYER_H
