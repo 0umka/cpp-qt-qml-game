@@ -64,7 +64,7 @@ private:
     qreal m_height = 40;
     qreal m_width = 40;
     QRectF m_hitbox = QRectF(m_position.x(), m_position.y(), width(), height());
-    int m_playerDistance;
+    float m_playerDistance = 0.0f;
 };
 
 #endif // ENEMY_H

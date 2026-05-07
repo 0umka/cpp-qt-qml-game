@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QGuiApplication>
 #include <QQmlContext>
 #include <QRandomGenerator>
 
@@ -17,7 +16,9 @@ class MainWindow : public QObject
     Q_PROPERTY(EnemyModel* enemyModel READ enemyModel CONSTANT)
     Q_PROPERTY(int enemyCount READ enemyCount)
 public:
-    explicit MainWindow(QGuiApplication &app, QObject *parent = nullptr);
+    explicit MainWindow(QGuiApplication &app,
+                        WeaponEntity::WeaponType weapon = WeaponEntity::WeaponType::FireStaff,
+                        QObject *parent = nullptr);
 
     bool initQml();
     EnemyModel* enemyModel() const { return m_enemyModel; }
@@ -38,7 +39,10 @@ private:
     QTimer* m_gameTimer = nullptr;
     Player* m_player = nullptr;
     EnemyModel* m_enemyModel = nullptr;
+    FireStaff* m_fireStaff = nullptr;
+    WeaponEntity::WeaponType m_weapon;
     int m_enemyCounter = 0;
+
     void removeDeadEnemies();
 };
 

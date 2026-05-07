@@ -3,5 +3,6 @@
         <file>qml/MainWindow.qml</file>
         <file>qml/Player.qml</file>
         <file>qml/Enemy.qml</file>
+        <file>qml/StartScreen.qml</file>
     </qresource>
 </RCC>

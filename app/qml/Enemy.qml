@@ -2,36 +2,94 @@ import QtQuick
 
 Item {
     id: root
-
     property var enemyData: null
 
-    width: enemyData ? enemyData.width : 0
+    width:  enemyData ? enemyData.width  : 0
     height: enemyData ? enemyData.height : 0
+    x: enemyData ? enemyData.position.x - width  / 2 : 0
+    y: enemyData ? enemyData.position.y - height / 2 : 0
 
-    x: enemyData ? enemyData.position.x - width/2: 0
-    y: enemyData ? enemyData.position.y - height/2 : 0
-
+    // Тело врага
     Rectangle {
-        width: root.width
+        anchors.centerIn: parent
+        width:  root.width
         height: root.height
-        color: "red"
-        radius: 5
-        border.color: "darkred"
-        border.width: 2
+        radius: 6
+        color: "#1a0a0a"
+        border.color: "#7f1d1d"
+        border.width: 1
 
+        // Блик
         Rectangle {
-            width: parent.width * (enemyData.health / enemyData.maxHealth)
-            height: 4
-            color: "orange"
-            anchors.bottom: parent.top
-
-            Behavior on width {
-                NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height * 0.3
+            radius: parent.radius
+            color: "transparent"
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#20ff2020" }
+                GradientStop { position: 1.0; color: "transparent" }
             }
+        }
+
+        // Иконка врага
+        Text {
+            anchors.centerIn: parent
+            text: "☠"
+            font.pixelSize: root.width * 0.45
+            color: "#f43f5e"
+            opacity: 0.85
         }
     }
 
-    Component.onCompleted: {
-        console.log("Enemy.qml loaded, enemyData:", enemyData)
+    // Полоса HP — над врагом
+    Item {
+        anchors.bottom: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 4
+        width: root.width + 4
+        height: 10
+
+        // Фон полосы
+        Rectangle {
+            anchors.fill: parent
+            radius: 3
+            color: "#1a0a2e"
+            border.color: "#2a1a3e"
+            border.width: 1
+        }
+
+        // Заполнение
+        Rectangle {
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.margins: 1
+            width: Math.max(2, (parent.width - 2) * (enemyData ? enemyData.health / enemyData.maxHealth : 1))
+            radius: 2
+            color: {
+                if (!enemyData) return "#16a34a"
+                var r = enemyData.health / enemyData.maxHealth
+                if (r > 0.6) return "#dc2626"
+                if (r > 0.3) return "#ea580c"
+                return "#facc15"
+            }
+
+            Behavior on width {
+                NumberAnimation { duration: 120; easing.type: Easing.OutQuad }
+            }
+
+            // Блик
+            Rectangle {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 1
+                radius: 1
+                color: "white"
+                opacity: 0.2
+            }
+        }
     }
 }

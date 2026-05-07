@@ -1,10 +1,11 @@
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QGuiApplication& app, QObject *parent)
+MainWindow::MainWindow(QGuiApplication& app, WeaponEntity::WeaponType weapon, QObject *parent)
     : QObject{parent}
     , m_app(app)
+    , m_weapon(weapon)
 {
-    m_engine = new QQmlApplicationEngine;
+    m_engine = new QQmlApplicationEngine(this);
     QObject::connect(
         m_engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -16,6 +17,9 @@ MainWindow::MainWindow(QGuiApplication& app, QObject *parent)
     m_envCreator = new EnvCreator(this);
     m_enemyCreator = new EnemyCreator(this);
     m_enemyModel = new EnemyModel(this);
+
+    WeaponCreator weaponCreator(m_enemyModel, m_weapon);
+    weaponCreator.create(this); // таймер атаки стартует в конструкторе FireStaff
 
     m_gameTimer = new QTimer(this);
     m_gameTimer->setInterval(16);
@@ -63,11 +67,11 @@ void MainWindow::removeDeadEnemies()
     for (int i = m_enemyModel->rowCount() - 1; i >= 0; --i) {
         Enemy* enemy = m_enemyModel->get(i);
         if (enemy && enemy->health() <= 0) {
-            enemy->deleteLater();
             m_enemyModel->removeEnemy(i);
         }
     }
 }
+
 void MainWindow::updateScene()
 {
     removeDeadEnemies();

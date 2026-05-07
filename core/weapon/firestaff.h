@@ -32,7 +32,7 @@ private slots:
 
 private:
     float m_attackSpeed = 1;
-    float m_damage = 1;
+    float m_damage = 50;
     qreal m_height = 5;
     qreal m_width = 5;
     bool m_passable = true;
