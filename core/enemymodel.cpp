@@ -33,6 +33,8 @@ QVariant EnemyModel::data(const QModelIndex &index, int role) const
         return enemy->health();
     case MaxHealthRole:
         return enemy->maxHealth();
+    case PlayerDistanceRole:
+        return enemy->playerDistance();
     default:
         return QVariant();
     }
@@ -45,6 +47,7 @@ QHash<int, QByteArray> EnemyModel::roleNames() const
     roles[PositionRole] = "position";
     roles[HealthRole] = "health";
     roles[MaxHealthRole] = "maxHealth";
+    roles[PlayerDistanceRole] = "playerDistance";
     return roles;
 }
 

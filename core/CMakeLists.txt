@@ -12,9 +12,9 @@ add_definitions(-DCMAKE)
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
 
-file(GLOB SOURCES *.cpp)
-file(GLOB HEADERS *.h)
-file(GLOB FORMS *.ui)
+file(GLOB SOURCES *.cpp weapon/*.cpp)
+file(GLOB HEADERS *.h weapon/*.h)
+file(GLOB FORMS *.ui weapon/*.ui)
 
 add_library(${PROJECT_NAME} SHARED
     ${SOURCES}

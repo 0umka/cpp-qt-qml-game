@@ -45,6 +45,7 @@ public:
     int experience() const { return m_experience; }
     bool followingMouse() const {return m_followingMouse; }
     static QPointF getPosition() {return m_position;}
+    static int getLevel() {return m_level; }
 
 public slots:
     void heal(int amount);
@@ -69,10 +70,10 @@ private:
     QTimer* m_movementTimer = nullptr;
     int m_health = 100;
     int m_maxHealth = 100;
-    int m_level = 1;
     int m_experience = 0;
     int m_expPerLvl = 10;
     static inline QPointF m_position = QPointF(0, 0);
+    static inline int m_level = 1;
     bool m_followingMouse = false;
     QPointF m_target;
     qreal m_height = 40;

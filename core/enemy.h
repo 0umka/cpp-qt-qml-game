@@ -17,6 +17,8 @@ public:
     explicit Enemy(QObject *parent = nullptr);
     ~Enemy();
 
+    float playerDistance() const {return m_playerDistance; }
+
     //virtual
     int health() const override {return m_health; }
     QPointF position() const override {return m_position; }
@@ -36,7 +38,7 @@ public:
 public slots:
     void takeDamage(int damage) override;
     void onDeath() override;
-    //virtual
+    //virtual    
 
 private slots:
     void updatePosition();
@@ -62,6 +64,7 @@ private:
     qreal m_height = 40;
     qreal m_width = 40;
     QRectF m_hitbox = QRectF(m_position.x(), m_position.y(), width(), height());
+    int m_playerDistance;
 };
 
 #endif // ENEMY_H

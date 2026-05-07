@@ -14,7 +14,8 @@ public:
         EnemyObjectRole = Qt::UserRole + 1,
         PositionRole,
         HealthRole,
-        MaxHealthRole
+        MaxHealthRole,
+        PlayerDistanceRole
     };
     explicit EnemyModel(QObject *parent = nullptr);
     ~EnemyModel();
@@ -24,7 +25,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
     //
-    QList<Enemy*> enemies() const { return m_enemies; }
+    QList<Enemy*> enemies() { return m_enemies; }
 
     void addEnemy(Enemy *enemy);
     void removeEnemy(int index);

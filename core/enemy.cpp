@@ -46,10 +46,10 @@ void Enemy::onDeath()
 void Enemy::updatePosition()
 {
     QPointF delta = Player::getPosition() - m_position;
-    float distance = std::hypot(delta.x(), delta.y());
+    m_playerDistance = std::hypot(delta.x(), delta.y());
 
-    if (distance > m_speed) {
-        QPointF currentPos = delta / distance;
+    if (m_playerDistance > m_speed) {
+        QPointF currentPos = delta / m_playerDistance;
         setPosition(m_position + currentPos * m_speed);
     }
 }
